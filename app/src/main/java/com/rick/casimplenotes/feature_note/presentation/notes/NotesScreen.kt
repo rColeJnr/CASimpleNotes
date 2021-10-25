@@ -18,6 +18,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.rick.casimplenotes.feature_note.presentation.notes.components.NoteItem
 import com.rick.casimplenotes.feature_note.presentation.notes.components.OrderSection
+import com.rick.casimplenotes.feature_note.presentation.util.Screen
 import kotlinx.coroutines.launch
 
 @ExperimentalAnimationApi
@@ -33,7 +34,7 @@ fun NotesScreen(
     Scaffold(
         floatingActionButton = {
             FloatingActionButton(
-                onClick = { },
+                onClick = { navController.navigate(Screen.AddEditNoteScreen.route) },
                 backgroundColor = MaterialTheme.colors.primary
             ) {
                 Icon(imageVector = Icons.Default.Add, contentDescription = "Add note")
@@ -52,7 +53,9 @@ fun NotesScreen(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(text = "Your note", style = MaterialTheme.typography.h4)
-                IconButton(onClick = {}) {
+                IconButton(onClick = {
+                    viewModel.onEvent(NotesEvents.ToggleOrderSection)
+                }) {
                     Icon(imageVector = Icons.Default.Sort, contentDescription = null)
                 }
             }
@@ -62,11 +65,12 @@ fun NotesScreen(
                 exit = fadeOut() + slideOutVertically()
             ) {
                 OrderSection(
-                    noteOrder = state.noteOrder,
-                    onOrderChange = { viewModel.onEvent(NotesEvents.Order(it)) },
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(16.dp)
+                        .padding(16.dp),
+                    noteOrder = state.noteOrder,
+                    onOrderChange = { viewModel.onEvent(NotesEvents.Order(it)) },
+
                 )
             }
             Spacer(modifier = Modifier.height(16.dp))
@@ -77,7 +81,8 @@ fun NotesScreen(
                         modifier = Modifier
                             .fillMaxWidth()
                             .clickable {
-
+                                navController
+                                    .navigate(Screen.AddEditNoteScreen.route + "?noteId=${note.id}&noteColour=${note.color}")
                             },
                         onDeleteClick = {
                             viewModel.onEvent(NotesEvents.DeleteNote(note))
@@ -86,7 +91,7 @@ fun NotesScreen(
                                     message = "Note deleted",
                                     actionLabel = "Undo"
                                 )
-                                if (result == SnackbarResult.ActionPerformed){
+                                if (result == SnackbarResult.ActionPerformed) {
                                     viewModel.onEvent(NotesEvents.RestoreNote)
                                 }
                             }

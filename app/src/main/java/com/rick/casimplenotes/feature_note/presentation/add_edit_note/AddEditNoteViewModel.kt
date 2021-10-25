@@ -8,7 +8,7 @@ import androidx.lifecycle.viewModelScope
 import com.rick.casimplenotes.feature_note.domain.model.InvalidNoteException
 import com.rick.casimplenotes.feature_note.domain.model.Note
 import com.rick.casimplenotes.feature_note.domain.use_case.NoteUseCases
-import com.rick.casimplenotes.feature_note.presentation.NoteTextFieldState
+import com.rick.casimplenotes.feature_note.presentation.notes.components.NoteTextFieldState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.launch

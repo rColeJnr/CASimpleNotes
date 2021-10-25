@@ -1,4 +1,4 @@
-package com.rick.casimplenotes.feature_note.presentation
+package com.rick.casimplenotes.feature_note.presentation.notes.components
 
 data class NoteTextFieldState(
     val text: String,
