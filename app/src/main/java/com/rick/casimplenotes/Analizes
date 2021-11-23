@@ -1,0 +1,111 @@
+so, to start with...
+
+Clean Architecture (CA)
+
+it's starts by package organization.
+
+*** Common ***
+
+this package contains code which is reused in different packages and different functions
+
+ ** Topics covered **
+- Extension functions & properties
+- Abstract classes
+- The Open-Closed Principle (from SOLID)
+- Object Singletons
+- Coroutine Dispatchers
+
+** Open-Closed Principle **
+
+"Any commonly reused software entity, which is expected to change, should have a fixed
+public interface, and a way to change its implementation"
+
+/* Software entity - class, function, etc
+
+an example would be a makeToast() function that takes a message: String parameter.
+
+*** Domain ***
+
+this package represents 2 things:
+    - the more general pieces of information, such as data classes, enums and constants
+    which the program must general represent
+    - what the program should do, using enums and interfaces.
+
+    in essence it's the foundation of the information system
+
+In other words, this package is sort of the blueprint of the application or feature
+    of the application.
+
+While in the MVVM we have data classes that "mold the object", in CA we have a whole package
+and inside this package we define everything that the application or feature will implement
+
+For example: An InterfaceApplicationSettings would have functions such as:
+                fun saveApp(parameters: App)
+                fun updateApp(parameters: App)
+                fun deleteApp(parameters: App)
+    and of course by data classes
+        data class App(
+            val name: String,
+            val id: Int
+        )
+
+UseCase come in this package, and they define each and every possible case of the feature
+On Presentation/UI package we define the Events that lead to this UseCases, we process the
+logic in logicFile, send the updated logic to the viewModel and the ViewModel moves state up to the view
+and the view passes state back to the view model, which passes an Event to the Logic, the Logic process
+the event and updates everything as it is the holder between the backend till frontend (kinda).
+
+Repository (Facade) pattern:
+    Hide the details of a sub-system(data-storage) behind an abstraction (interface)
+
+    Loose coupling Means your code is:
+        - Easier to design;
+        - Easier to fix;
+        - Easier to test;
+        - Easier to improve;
+
+*** Persistence ***
+
+This package contains data that has the purpose to persist throughout the lifecycle process
+
+- Long term storage (persistence)
+- Protocol Buffers (Jetpack Datastore)
+- File system storage
+- Repository and Data Source Implementations
+
+an example would be an implementation of an interface (part of the domain package) for saving data in the Fyle System
+
+Storage Mechanisms
+ Datastore
+ - Uses protocol buffers (Serialization language like JSON)
+ - Lightweight and easy to read
+ - Has a compiler for code generation
+
+ File System
+ Room
+ Firebase ....
+
+*** Presentation Logic ***
+in this package is where the UI is written, it contains the Activity, ViewModel,
+ The Feature or Application logic, the actually Screen (Fragment or compose)
+
+ Feature/Application logic contains all the given logic, the data is processed here
+ and then passed to the viewModel which is freed of all sort of computational logic,
+ at this points the viewModel merely holds states, but doesn't update them
+
+Purpose: Coordinate the Container, ViewModel, and Backend Repositories, including
+coroutine cancellation.
+    if notify of an onStop event it will cancel all coroutines
+
+ViewModel
+ Purpose: Virtually represent the UI of an active view, it's a model of the view
+ Design: Exposes function types which the view will bind to, allowing
+ it to automatically update the View when it's own data is changed
+
+Strategy Pattern w/ Sealed Class to Handle UI Events
+     to clean the interface from the logic class of our viewmodel
+     - each sub-class of the sealed class represents an action the can occur in the view
+
+
+
+

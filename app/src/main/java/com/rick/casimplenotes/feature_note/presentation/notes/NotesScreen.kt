@@ -13,6 +13,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
@@ -37,7 +38,7 @@ fun NotesScreen(
                 onClick = { navController.navigate(Screen.AddEditNoteScreen.route) },
                 backgroundColor = MaterialTheme.colors.primary
             ) {
-                Icon(imageVector = Icons.Default.Add, contentDescription = "Add note")
+                Icon(imageVector = Icons.Default.Add, contentDescription = "Add")
             }
         },
         scaffoldState = scaffoldSate
@@ -56,7 +57,7 @@ fun NotesScreen(
                 IconButton(onClick = {
                     viewModel.onEvent(NotesEvents.ToggleOrderSection)
                 }) {
-                    Icon(imageVector = Icons.Default.Sort, contentDescription = null)
+                    Icon(imageVector = Icons.Default.Sort, contentDescription = "Sort")
                 }
             }
             AnimatedVisibility(
@@ -67,7 +68,8 @@ fun NotesScreen(
                 OrderSection(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(16.dp),
+                        .padding(16.dp)
+                        .testTag("orderTag"),
                     noteOrder = state.noteOrder,
                     onOrderChange = { viewModel.onEvent(NotesEvents.Order(it)) },
 

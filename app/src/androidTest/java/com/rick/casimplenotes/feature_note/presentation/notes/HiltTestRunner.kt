@@ -1,0 +1,15 @@
+package com.rick.casimplenotes.feature_note.presentation.notes
+
+import android.app.Application
+import android.content.Context
+import androidx.test.runner.AndroidJUnitRunner
+
+class HiltTestRunner: AndroidJUnitRunner() {
+    override fun newApplication(
+        cl: ClassLoader?,
+        className: String?,
+        context: Context?
+    ): Application {
+        return super.newApplication(cl, HiltTestRunner::class.java.name, context)
+    }
+}
